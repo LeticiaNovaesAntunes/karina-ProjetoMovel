@@ -1,5 +1,5 @@
 import express from "express";
-import { userRoutes } from "./routes.js"; // mantenha o .js se usar ESM
+import { userRoutes } from "./Routes/UserRoutes.js"; 
 
 const app = express();
 
