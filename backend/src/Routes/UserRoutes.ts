@@ -4,7 +4,7 @@ import { createUser, updateUser, loginUser, deleteUser } from "../Controllers/Us
 
 export const userRoutes = Router();
 
-userRoutes.post("/singup", createUser);        
+userRoutes.post("/signup", createUser);        
 userRoutes.put("/:id", updateUser);      
 userRoutes.get("/singin", loginUser);   
 userRoutes.delete("/:id", deleteUser);   
