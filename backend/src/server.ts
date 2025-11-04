@@ -1,11 +1,14 @@
 import express from "express";
+import cors from 'cors';
 import { userRoutes } from "./Routes/UserRoutes.js"; 
+
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
-// liga as rotas
+
 app.use("/users", userRoutes);
 
 app.listen(3000, () => {
