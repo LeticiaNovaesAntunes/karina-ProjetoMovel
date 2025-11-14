@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import logo from '../../assets/logo.png';
+// import logo from '../../assets/logo.png';
 
-const EsquecerSenha = ({ navigation }) => {
+const EsquecerSenha = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
+
+  console.log(email)
 
   const handleRecoverPassword = () => {
     Alert.alert(
@@ -23,7 +25,7 @@ const EsquecerSenha = ({ navigation }) => {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps='handled'
       >
-        <Image source={logo} style={styles.logo} />
+        {/* <Image source={logo} style={styles.logo} /> */}
         <Text style={styles.title}>Recuperar Senha</Text>
         <Text style={styles.subtitle}>
           Digite seu e-mail para receber um link de redefinição

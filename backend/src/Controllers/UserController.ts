@@ -1,14 +1,17 @@
-// src/controllers/authController.ts
-import { PrismaClient } from "../generated/prisma/index.js";
+import { PrismaClient } from "../generated/prisma/index";
 import type { Request, Response } from "express";
-import type { UserDTO, UpdateUserDTO } from "../DTO/UserDTO.js";
+import type { UserDTO, UpdateUserDTO } from "../DTO/UserDTO";
+
 
 const prisma = new PrismaClient();
 
 export const createUser = async (req: Request, res: Response) => {
   const { senha, email } = req.body as UserDTO;
+      console.log("\n\nSENHA ::::", email)
+
   try {
     const user = await prisma.user.create({ data: { senha, email } });
+    console.log('\n\n USER :::', user)
     res.json(user);
   } catch (error) {
     res.status(400).json({ error: "Erro ao criar usuário" });
@@ -54,25 +57,16 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 }
 
-export const forgotPassword = async (request, response) => {
+export const forgotPassword = async (request: Request, response:Response) => {
     const { email } = request.body;
+    console.log("\n\nSENHA ::::", email)
 
-    // 1. Encontrar o usuário
     const user = await prisma.user.findUnique({
         where: { email },
     });
 
-    // 2. Lógica de Envio de Email (APENAS UM SIMULACRO)
-    if (user) {
-        // ⚠️ Aqui você implementaria a lógica real para:
-        //    a) Gerar um token de redefinição único.
-        //    b) Salvar esse token e o tempo de expiração no DB.
-        //    c) Enviar um email para o usuário com o link contendo o token.
 
-        console.log(`[SUCESSO] Processo de redefinição iniciado para: ${email}`);
-        
-        // 🚨 RETORNO IMPORTANTE: Retorne 200/204 para o FRONTEND
-        // Por segurança, você sempre retorna sucesso para evitar que hackers descubram emails válidos.
+    if (user) {
         return response.status(200).json({ message: "Reset process initiated." });
     }
     

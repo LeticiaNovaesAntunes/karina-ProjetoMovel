@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Image, Scro
 import { LinearGradient } from 'expo-linear-gradient'; // Importe para o botão
 import api from '../services/api'; // Sua instância de API
 // Importe a imagem do logo (Ajuste o caminho se necessário)
-import logo from '../../assets/logo.png'; // Caminho típico: ../../assets/logo.png
+// import logo from '../../assets/logo.png'; // Caminho típico: ../../assets/logo.png
 
 
 // Renomeamos para manter a convenção do seu código original, mas o nome é apenas um detalhe
@@ -52,7 +52,7 @@ export default function Cadastro({ navigation }: any) {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps='handled'
       >
-         <Image source={logo} style={styles.logo} /> 
+         {/* <Image source={logo} style={styles.logo} />  */}
         
         <Text style={styles.title}>Crie sua conta</Text>
         <Text style={styles.subtitle}>Junte-se à nossa comunidade de bem-estar</Text>

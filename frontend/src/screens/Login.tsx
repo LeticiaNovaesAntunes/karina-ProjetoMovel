@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Importado para o botão
-import api from '../services/api'; // Sua instância de API
-// Certifique-se de que o caminho para o logo está correto!
-import logo from '../../assets/logo.png'; 
+import { LinearGradient } from 'expo-linear-gradient'; 
+import api from '../services/api'; 
+// import logo from '../../assets/logo.png'; 
 
 export default function Login({ navigation }: any) {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState(''); // Mantido 'senha' para consistência com o backend
+  const [senha, setSenha] = useState(''); 
 
   const handleLogin = async () => {
     try {
-      // Rota ajustada para o que você usa: /users/singin
       const response = await api.post('/users/singin', { email, senha });
 
-      // Assumindo que a resposta de sucesso tem dados, como um token ou objeto de usuário
       if (response.data) { 
         Alert.alert('Sucesso', 'Login realizado!');
-        // Navegue para a tela principal (ajuste o nome da tela principal se necessário)
         navigation.navigate('MainAppScreen'); 
       } else {
-        // Se a API retornar um status 200, mas o corpo indicar falha
         Alert.alert('Erro', 'Email ou senha inválidos');
       }
     } catch (error) {
-      // Erro de rede, 401 Unauthorized, etc.
       console.log('Erro no Login:', error);
       Alert.alert('Erro', 'Falha no login. Verifique seus dados e conexão.');
     }
@@ -39,12 +33,11 @@ export default function Login({ navigation }: any) {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps='handled'
       >
-        <Image source={logo} style={styles.logo} />
+        {/* <Image source={logo} style={styles.logo} /> */}
 
         <Text style={styles.title}>Bem-vindo!</Text>
         <Text style={styles.subtitle}>Faça login para continuar</Text>
 
-        {/* Campo E-mail */}
         <TextInput
           style={styles.input}
           placeholder="E-mail"
@@ -55,7 +48,6 @@ export default function Login({ navigation }: any) {
           autoCapitalize="none"
         />
         
-        {/* Campo Senha */}
         <TextInput
           style={styles.input}
           placeholder="Senha"
@@ -69,10 +61,9 @@ export default function Login({ navigation }: any) {
   <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
 </TouchableOpacity>
 
-        {/* Botão de Login com Gradient */}
         <TouchableOpacity style={styles.buttonContainer} onPress={handleLogin}>
           <LinearGradient
-            colors={['#FF6B8B', '#F83A7F']} // Cores baseadas no seu exemplo
+            colors={['#FF6B8B', '#F83A7F']} 
             style={styles.buttonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -81,7 +72,6 @@ export default function Login({ navigation }: any) {
           </LinearGradient>
         </TouchableOpacity>
 
-        {/* Link para Cadastro */}
         <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}> 
           <Text style={styles.signupText}>
             Não tem uma conta? <Text style={styles.signupLink}>Cadastre-se</Text>

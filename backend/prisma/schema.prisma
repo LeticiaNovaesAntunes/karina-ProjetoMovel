@@ -24,3 +24,29 @@ model User {
   updatedAt DateTime @updatedAt
 
   }
+
+enum Level {
+  FACIL
+  MEDIO
+  DIFICIL
+}
+
+enum PartExercised {
+  POSTURA
+  ABDOMEN
+  PERNAS
+  CARDIO
+}
+
+
+  model Classes{
+    id String @id @default(uuid())
+    exercise_name String 
+    level Level @default(FACIL)
+    image_url String
+    video_url String
+    part_exercised PartExercised
+    description String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  }
