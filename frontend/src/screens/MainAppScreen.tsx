@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Header from './Header';
 
 export default function MainAppScreen({ navigation }: any) {
 
   const categories = [
-    { name: "Postura", color: ['#F7C0D8', '#F083A2'] },
-    { name: "Pernas", color: ['#C6E2FF', '#8AB6F9'] },
-    { name: "Abdômen", color: ['#FFD6A5', '#FF965D'] },
-    { name: "Cardio", color: ['#FFB3B3', '#FF6F6F'] },
+    { name: "Pernas" },
+    { name: "Abdômen" },
+    { name: "Postura" },
+    { name: "Cardio" },
   ];
 
-  // Mapa para transformar texto → ENUM do Prisma
   const partEnumMap: any = {
     "Postura": "POSTURA",
     "Pernas": "PERNAS",
@@ -20,12 +20,18 @@ export default function MainAppScreen({ navigation }: any) {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#FDE6E4', '#FFFFFF']}
+      style={styles.container}
+    >
+       <Header title="Treinos" />
+      <View style={styles.header}>
+        <Text style={styles.appName}>Serena</Text>
+        <Text style={styles.subtitle}>Encontre seu equilíbrio</Text>
+      </View>
 
-      <Text style={styles.title}>Yoga para o Dia</Text>
-      <Text style={styles.subtitle}>Escolha um objetivo para treinar</Text>
-
-      <ScrollView 
+      {/* OPTIONS */}
+      <ScrollView
         contentContainerStyle={styles.optionsContainer}
         showsVerticalScrollIndicator={false}
       >
@@ -35,62 +41,90 @@ export default function MainAppScreen({ navigation }: any) {
             style={styles.optionWrapper}
             onPress={() => {
               const enumValue = partEnumMap[item.name];
-
-              navigation.navigate("ClasseListScreen", {
-                part: enumValue   // ← envia POSTURA, PERNAS, ABDOMEN, CARDIO
-              });
+              navigation.navigate("ClasseListScreen", { part: enumValue });
             }}
           >
-            <LinearGradient colors={item.color} style={styles.optionCard}>
-              <Text style={styles.optionText}>{item.name}</Text>
-            </LinearGradient>
+            <View style={styles.card}>
+              <Text style={styles.cardText}>{item.name}</Text>
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-    </View>
+      {/* FOOTER */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Respire fundo. Você está no lugar certo.</Text>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFE1EC',
     paddingTop: 70,
     paddingHorizontal: 25,
   },
-  title: {
-    fontSize: 32,
-    color: '#4A4A4A',
-    fontWeight: 'bold',
-    marginBottom: 5,
-    textAlign: 'center',
+
+  header: {
+    alignItems: 'center',
+    marginBottom: 40,
   },
+
+  appName: {
+    fontSize: 48,
+    color: '#000000',
+    fontWeight: '300',
+    letterSpacing: 2,
+    marginBottom: 4,
+  },
+
   subtitle: {
     fontSize: 18,
-    color: '#6D6D6D',
-    marginBottom: 30,
-    textAlign: 'center',
+    color: '#555',
+    fontWeight: '300',
   },
+
   optionsContainer: {
-    paddingBottom: 100,
-    alignItems: 'center',
+    paddingBottom: 120,
   },
+
   optionWrapper: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 22,
   },
-  optionCard: {
+
+  card: {
     width: '100%',
-    height: 90,
-    borderRadius: 25,
+    height: 95,
+    borderRadius: 28,
+    backgroundColor: '#ffffffff',
+    color: '#000000ff',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
+    shadowColor: '#F5B0C2',
+    borderColor: '#F5B0C2',
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
   },
-  optionText: {
-    fontSize: 22,
-    color: '#FFFFFF',
-    fontWeight: '700',
+
+  cardText: {
+    fontSize: 24,
+    color: '#000000ff',
+    fontWeight: '300',
+    letterSpacing: 2,
+  },
+
+  footer: {
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 25,
+  },
+
+  footerText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '300',
   },
 });

@@ -7,8 +7,10 @@ import EsquecerSenha from './src/screens/EsquecerSenha';
 import MainAppScreen from './src/screens/MainAppScreen';
 import ClassesListScreen from './src/screens/ClassesList';
 import ClassDetailScreen from './src/screens/ClassDetailScreen';
+import Header from './src/screens/Header';
+import { RootStackParamList } from './src/types/navigation';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -20,6 +22,7 @@ export default function App() {
         <Stack.Screen name="MainAppScreen" component={MainAppScreen}/>
         <Stack.Screen name="ClasseListScreen" component={ClassesListScreen}/>
         <Stack.Screen name="ClassDetailScreen" component={ClassDetailScreen} />
+        <Stack.Screen name="Header"component={Header}/>
 
       </Stack.Navigator>
     </NavigationContainer>

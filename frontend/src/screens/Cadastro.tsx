@@ -23,21 +23,18 @@ export default function Cadastro({ navigation }: any) {
       return;
     }
     
-    // 2. Validação de Campos Obrigatórios
     if (!name || !email || !telefone || !senha) {
        Alert.alert('Atenção', 'Por favor, preencha todos os campos obrigatórios.');
        return;
     }
 
     try {
-      // 3. Chamada à API com todos os dados (Ajuste a rota se necessário, mantive 'singup')
       const userData = { name, email, senha, telefone };
       await api.post('/users/singup', userData);
 
       Alert.alert('Sucesso', 'Usuário criado!');
       navigation.navigate('Login'); // Ajuste 'Login' para o nome da sua tela de login se for diferente
     } catch (error) {
-      // É crucial olhar o console.log no terminal para saber qual erro o backend retornou
       console.log('Erro de Cadastro:', error); 
       Alert.alert('Erro', 'Falha ao criar usuário. Verifique sua conexão e tente novamente.');
     }
@@ -108,7 +105,6 @@ export default function Cadastro({ navigation }: any) {
           secureTextEntry
         />
 
-        {/* Botão de Cadastro com Gradient */}
         <TouchableOpacity style={styles.buttonContainer} onPress={handleCadastro}>
           <LinearGradient
             colors={['#F83A7F', '#D02C70']}
