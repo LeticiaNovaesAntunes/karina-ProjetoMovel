@@ -4,26 +4,28 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/screens/Login';
 import Cadastro from './src/screens/Cadastro';
 import EsquecerSenha from './src/screens/EsquecerSenha';
+import TelaPerfil from './src/screens/TelaPerfil';
+import TelaEditarPerfil from './src/screens/TelaEditarPerfil';
+import TelaAdmin from './src/screens/TelaAdmin';
 import MainAppScreen from './src/screens/MainAppScreen';
 import ClassesListScreen from './src/screens/ClassesList';
 import ClassDetailScreen from './src/screens/ClassDetailScreen';
-import Header from './src/screens/Header';
-import { RootStackParamList } from './src/types/navigation';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+    <NavigationContainer >
+      <Stack.Navigator  initialRouteName="Login" >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="EsquecerSenha" component={EsquecerSenha} />
+        <Stack.Screen name="TelaPerfil" component={TelaPerfil} />
+        <Stack.Screen name="TelaEditarPerfil" component={TelaEditarPerfil} />
+        <Stack.Screen name="TelaAdmin" component={TelaAdmin} />
         <Stack.Screen name="MainAppScreen" component={MainAppScreen}/>
-        <Stack.Screen name="ClasseListScreen" component={ClassesListScreen}/>
+        <Stack.Screen name="ClassesListScreen" component={ClassesListScreen}/>
         <Stack.Screen name="ClassDetailScreen" component={ClassDetailScreen} />
-        <Stack.Screen name="Header"component={Header}/>
-
       </Stack.Navigator>
     </NavigationContainer>
   );

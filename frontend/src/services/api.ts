@@ -1,7 +1,29 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '@env';  // ← agora vem do .env
+
+console.log("🔌 API BASE URL carregada:", API_BASE_URL);
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000', 
+    baseURL: API_BASE_URL, // ← agora é seguro
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
+
+api.interceptors.request.use(
+    async (config) => {
+        const token = await AsyncStorage.getItem('userToken');
+
+        console.log('Token encontrado no AsyncStorage:', token ? 'Sim' : 'Não');
+
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 export default api;

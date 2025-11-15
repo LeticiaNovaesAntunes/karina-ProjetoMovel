@@ -6,7 +6,7 @@ export default function ClassesListScreen({ route, navigation }: any) {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/classes/part/${part}`)
+    fetch(`http://172.22.19.178/20:3000/classes/part/${part}`)
       .then(res => res.json())
       .then(setClasses)
       .catch(err => console.log(err));
