@@ -1,0 +1,16 @@
+import { Router } from "express";
+import { createUser, updateUser, loginUser, deleteUser, forgotPassword, getUserProfile, getAllUsers, adminControl } from "../Controllers/UserController"
+import { authenticateToken, isAdmin } from '../middlewares/authMiddleware';
+// Mude 'export const userRoutes = Router();' para:
+const router = Router();
+
+router.post("/signup", createUser);        
+router.put("/profile", authenticateToken, updateUser);
+router.post("/signin", loginUser); 
+router.post("/forgotPassword", forgotPassword);  
+router.delete("/admin/:id", authenticateToken, isAdmin, deleteUser); 
+router.get("/profile", authenticateToken, getUserProfile);
+router.get("/", authenticateToken, isAdmin, getAllUsers);
+router.patch("/admin/:id", authenticateToken, isAdmin, adminControl);
+// Use Exportação Padrão (default) para funcionar com o server.ts
+export default router;
