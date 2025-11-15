@@ -14,12 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id String   @id @default(uuid())
-  name String @default("Usuário Não Identificado")
+  name String 
   email     String   @unique
-  senha     String
+  passwordHash String 
   telefone String?
+  role         Role     @default(USER)
+  photoUrl     String?
+  isBlocked    Boolean  @default(false) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
