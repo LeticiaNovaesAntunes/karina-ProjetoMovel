@@ -91,9 +91,13 @@ export default function TelaPerfil({ navigation }: any) {
             </TouchableOpacity>
 
             {isAdmin && (
+                <div>
                 <TouchableOpacity onPress={() => navigation.navigate('TelaAdmin')}>
                     <Text style={styles.adminLink}>Acessar Painel de Controle</Text>
                 </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('CreateClasses')}>
+                    <Text style={styles.adminLink}>Cadastar Aulas</Text>
+                </TouchableOpacity></div>
             )}
         </View>
     );

@@ -47,12 +47,37 @@ export const deleteClass = async (req: Request, res: Response) => {
 };
 
 export const getClasses = async (req: Request, res: Response) => {
-  try {
-    const classes = await prisma.classes.findMany();
-    res.json(classes);
-  } catch (error) {
-    res.status(400).json({ error: "Erro ao listar classes" });
-  }
+    const { name } = req.query;
+    const searchName = name ? String(name) : undefined;
+
+    try {
+        const whereClause = searchName 
+            ? {
+                OR: [
+                    {
+                        exercise_name: {
+                            contains: searchName,
+                            mode: 'insensitive',
+                        },
+                    },
+                    {
+                        level: {
+                            contains: searchName,
+                            mode: 'insensitive',
+                        },
+                    },
+                ],
+            }
+            : {};
+
+        const classes = await prisma.classes.findMany({
+            where: whereClause,
+        });
+
+        res.json(classes);
+    } catch (error) {
+        res.status(400).json({ error: "Erro ao listar classes" });
+    }
 };
 
 export const getClassById = async (req: Request, res: Response) => {

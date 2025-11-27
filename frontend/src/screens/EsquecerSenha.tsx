@@ -8,13 +8,40 @@ const EsquecerSenha = ({ navigation }: any) => {
 
   console.log(email)
 
-  const handleRecoverPassword = () => {
-    Alert.alert(
-      'Instruções Enviadas',
-      `Se o e-mail estiver cadastrado, você receberá instruções para redefinir sua senha.`
-    );
-    navigation.navigate('Login');
-  };
+ // EsquecerSenha.tsx
+
+const handleRecoverPassword = async () => {
+    if (!email) {
+        Alert.alert('Erro', 'Por favor, digite seu e-mail.');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/auth/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+        });
+        
+        if (response.ok) {
+            // 2. Se o backend disser que o e-mail é válido e o token foi enviado:
+            Alert.alert(
+                'Token Enviado!',
+                'Verifique seu e-mail para o código de 4 dígitos.'
+            );
+            
+            // 3. Navegar para a tela onde o usuário digitará o token e a nova senha
+            navigation.navigate('VerificarTokenScreen', { email: email });
+        } else {
+            // Se o backend retornar 404/400 (e-mail não encontrado ou erro de envio)
+            const errorData = await response.json();
+            Alert.alert('Erro', errorData.error || 'Não foi possível iniciar a recuperação de senha.');
+        }
+    } catch (error) {
+        Alert.alert('Erro de Conexão', 'Não foi possível conectar ao servidor. Tente novamente.');
+    }
+};
+
 
   return (
     <KeyboardAvoidingView

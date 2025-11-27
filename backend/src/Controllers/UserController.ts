@@ -12,6 +12,8 @@ export const createUser = async (request: Request, response: Response) => {
     const { name, email, senha, telefone } = request.body;
     const roleFromRequest = request.body.role || "USER";
 
+    console.log("Role recebida na criação de usuário:", request.body);
+
     if (!name || !email || !senha) {
         return response.status(400).json({ error: "Campos obrigatórios faltando." });
     }

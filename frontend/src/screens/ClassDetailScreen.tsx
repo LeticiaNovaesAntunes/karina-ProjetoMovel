@@ -1,144 +1,205 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, Platform } from 'react-native';
-// import { MaterialCommunityIcons } from '@expo/vector-icons';ss
-// import { WebView } from 'react-native-webview'; // só necessário para mobile
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+import TopNavBar from './Header'; // Verifique se a importação está correta
 
-export default function ClassDetailScreen({ route }: any) {
-  const { data } = route.params;
+const { width } = Dimensions.get('window');
 
-  // Função para extrair videoId do link completo do YouTube
-  const getVideoId = (url: string) => {
-    const regExp =
-      /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = url.match(regExp);
-    return match ? match[1] : null;
-  };
+const COLORS = {
+    primary: '#c65091ff',
+    background: '#FFFDFD',
+    textDark: '#555555',
+    textMedium: '#777777',
+    cardBackground: '#FFFFFF',
+    levelFacil: '#10B981', // Verde
+    levelMedio: '#F59E0B', // Laranja
+    levelDificil: '#EF4444', // Vermelho
+};
 
-  const videoId = getVideoId(data.video_url); // supondo que o link completo vem em data.youtube_link
+const NAVBAR_HEIGHT_ADJUSTMENT = 90;
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Título */}
-      <Text style={styles.title}>{data.exercise_name}</Text>
+// Mapeia o nível para a cor do badge
+const getLevelColor = (level: string) => {
+    switch (level.toUpperCase()) {
+        case 'FACIL':
+            return COLORS.levelFacil;
+        case 'MEDIO':
+            return COLORS.levelMedio;
+        case 'DIFICIL':
+            return COLORS.levelDificil;
+        default:
+            return COLORS.textMedium;
+    }
+};
 
-      {/* Imagem do exercício */}
-      <Image source={{ uri: data.image_url }} style={styles.image} />
+export default function ClassDetailScreen({ route, navigation }: any) {
+    const { data: item } = route.params;
 
-      {/* Vídeo */}
-      {videoId && (
-        <View style={styles.videoContainer}>
-          {Platform.OS === 'web' ? (
-            <iframe
-              width="100%"
-              height="360"
-              src={`https://www.youtube.com/embed/${videoId}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          ) : (
-            <WebView
-              style={{ width: '100%', height: 220 }}
-              source={{ uri: `https://www.youtube.com/embed/${videoId}` }}
+    const handleVideoPress = () => {
+        if (item.video_url && item.video_url.startsWith('http')) {
+            Linking.openURL(item.video_url);
+        } else {
+            console.log('URL de vídeo inválida:', item.video_url);
+        }
+    };
+
+    return (
+        <View style={styles.screenContainer}>
+            <TopNavBar 
+                navigation={navigation} 
+                activeScreen={'ClassDetailScreen'} 
             />
-          )}
-        </View>
-      )}
+            
+            <ScrollView 
+                style={styles.scrollViewFlex}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                <Text style={styles.title}>{item.exercise_name}</Text>
+                
+                <View style={styles.headerRow}>
+                    <View style={[styles.badge, { backgroundColor: getLevelColor(item.level) }]}>
+                        <Text style={styles.badgeText}>{item.level.toUpperCase()}</Text>
+                    </View>
+                    <Text style={styles.partText}>Foco: {item.part_exercised}</Text>
+                </View>
 
-      {/* Info e badges */}
-      <View style={styles.infoSection}>
-        <View style={styles.badgesContainer}>
-          <View style={[styles.badge, { backgroundColor: '#F4A1C1' }]}>
-            <Text style={styles.badgeText}>{data.level}</Text>
-          </View>
-          <View style={[styles.badge, { backgroundColor: '#FFD966' }]}>
-            <Text style={styles.badgeText}>{data.part_exercised}</Text>
-          </View>
-          {data.duration && (
-            <View style={styles.timeBadge}>
-              <MaterialCommunityIcons name="clock-outline" size={16} color="#555" />
-              <Text style={styles.timeText}>{data.duration}</Text>
-            </View>
-          )}
-        </View>
+                {item.image_url ? (
+                    <Image
+                        source={{ uri: item.image_url }}
+                        style={styles.image}
+                        resizeMode="cover"
+                    />
+                ) : (
+                    <View style={styles.imagePlaceholder}>
+                        <MaterialIcons name="image-not-supported" size={50} color={COLORS.textMedium} />
+                        <Text style={styles.placeholderText}>Sem Imagem</Text>
+                    </View>
+                )}
 
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionTitle}>Descrição</Text>
-          <Text style={styles.description}>{data.description}</Text>
+                <Text style={styles.sectionTitle}>Descrição da Aula</Text>
+                <Text style={styles.description}>{item.description}</Text>
+
+                {item.video_url ? (
+                    <TouchableOpacity 
+                        style={styles.videoButton} 
+                        onPress={handleVideoPress}
+                    >
+                        <MaterialIcons name="ondemand-video" size={24} color={COLORS.cardBackground} />
+                        <Text style={styles.videoButtonText}>Assistir ao Vídeo de Demonstração</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <View style={styles.videoPlaceholder}>
+                        <Text style={styles.placeholderText}>Vídeo de demonstração não fornecido.</Text>
+                    </View>
+                )}
+
+                <View style={{ height: 40 }} />
+            </ScrollView>
         </View>
-      </View>
-    </ScrollView>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    paddingBottom: 60,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: 15,
-    color: '#333',
-  },
-  image: {
-    width: '100%',
-    height: 220,
-    borderRadius: 0,
-    marginBottom: 25,
-  },
-  videoContainer: {
-    width: '100%',
-    height: 220,
-    marginBottom: 20,
-  },
-  infoSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  badgesContainer: {
-    marginRight: 15,
-  },
-  badge: {
-    paddingVertical: 6,
-    alignContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  badgeText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  timeBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  timeText: {
-    marginLeft: 5,
-    fontSize: 14,
-    color: '#555',
-  },
-  descriptionContainer: {
-    flex: 1,
-  },
-  descriptionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 8,
-    color: '#333',
-  },
-  description: {
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'justify',
-    color: '#555',
-  },
+    screenContainer: {
+        flex: 1,
+        backgroundColor: COLORS.background,
+    },
+    scrollViewFlex: {
+        flex: 1,
+        paddingTop: NAVBAR_HEIGHT_ADJUSTMENT,
+    },
+    contentContainer: {
+        paddingHorizontal: 25,
+        paddingBottom: 20,
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: '800',
+        color: COLORS.textDark,
+        marginBottom: 15,
+        lineHeight: 38,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    badge: {
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 20,
+        marginRight: 15,
+    },
+    badgeText: {
+        color: COLORS.cardBackground,
+        fontWeight: 'bold',
+        fontSize: 12,
+    },
+    partText: {
+        fontSize: 16,
+        color: COLORS.textMedium,
+        fontWeight: '600',
+    },
+    image: {
+        width: width - 50,
+        height: width * 0.6,
+        borderRadius: 15,
+        marginBottom: 30,
+    },
+    imagePlaceholder: {
+        width: width - 50,
+        height: width * 0.6,
+        borderRadius: 15,
+        marginBottom: 30,
+        backgroundColor: '#EAEAEA',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#DDDDDD',
+    },
+    placeholderText: {
+        marginTop: 10,
+        color: COLORS.textMedium,
+    },
+    sectionTitle: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: COLORS.textDark,
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EEEEEE',
+        paddingBottom: 5,
+    },
+    description: {
+        fontSize: 16,
+        color: COLORS.textMedium,
+        marginBottom: 30,
+        lineHeight: 24,
+        textAlign: 'justify',
+    },
+    videoButton: {
+        flexDirection: 'row',
+        backgroundColor: COLORS.primary,
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+        marginBottom: 20,
+    },
+    videoButtonText: {
+        color: COLORS.cardBackground,
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginLeft: 10,
+    },
+    videoPlaceholder: {
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: '#F7F7F7',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#DDDDDD',
+    }
 });
