@@ -10,6 +10,10 @@ import TelaAdmin from './src/screens/TelaAdmin';
 import MainAppScreen from './src/screens/MainAppScreen';
 import ClassesListScreen from './src/screens/ClassesList';
 import ClassDetailScreen from './src/screens/ClassDetailScreen';
+import CreateClasses from './src/screens/CreateClass';
+import AllClassesScreen from './src/screens/AllClasses';
+import VerificarTokenScreen from './src/screens/VerificarTokenScreen';
+import NovaSenhaScreen from './src/screens/NovaSenhaScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +30,10 @@ export default function App() {
         <Stack.Screen name="MainAppScreen" component={MainAppScreen}/>
         <Stack.Screen name="ClassesListScreen" component={ClassesListScreen}/>
         <Stack.Screen name="ClassDetailScreen" component={ClassDetailScreen} />
+        <Stack.Screen name="CreateClasses" component={CreateClasses} />
+        <Stack.Screen name="AllClassesScreen" component={AllClassesScreen} />
+        <Stack.Screen name="VerificarTokenScreen" component={VerificarTokenScreen} />
+        <Stack.Screen name="NovaSenhaScreen" component={NovaSenhaScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

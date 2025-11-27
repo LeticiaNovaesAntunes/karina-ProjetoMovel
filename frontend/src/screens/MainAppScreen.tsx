@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import TopNavBar from './Header';
 
 const MOCK_USER = {
     name: "Serena",
     role: "ADMIN",
 };
 
-const TOP_NAV_OPTIONS = [
-    { name: "Início", icon: "home", screen: "TelaInicial" },
-    { name: "Exercícios", icon: "fitness-center", screen: "TelaExercicios" },
-    { name: "Comunidade", icon: "people-alt", screen: "TelaComunidade" },
-    { name: "Perfil", icon: "person", screen: "TelaPerfil" },
-];
+
 
 export default function MainAppScreen({ navigation }: any) {
     const [user, setUser] = useState(MOCK_USER);
@@ -33,13 +29,6 @@ export default function MainAppScreen({ navigation }: any) {
         "Cardio": "CARDIO",
     };
 
-    const handleNavigation = (screen: string) => {
-        if (navigation?.navigate) {
-            navigation.navigate(screen);
-        } else {
-            Alert.alert("Erro de Rota", `A rota '${screen}' não pôde ser acessada.`);
-        }
-    };
 
     const handleCategoryPress = (itemName: string) => {
         const enumValue = partEnumMap[itemName];
@@ -48,36 +37,10 @@ export default function MainAppScreen({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            
-            {/* TOP NAVBAR */}
-            <View style={styles.fixedHeader}>
-                <View style={styles.headerContent}>
-                    {TOP_NAV_OPTIONS.map((item, index) => {
-                        const isActive = item.name === 'Início';
-                        return (
-                            <TouchableOpacity
-                                key={index}
-                                style={styles.topNavItem}
-                                onPress={() => handleNavigation(item.screen)}
-                            >
-                                <MaterialIcons 
-                                    name={item.icon as any} 
-                                    size={24} 
-                                    color={isActive ? styles.colorPrimary.color : styles.colorTextLight.color} 
-                                />
-                                <Text style={[
-                                    styles.topNavText, 
-                                    {color: isActive ? styles.colorPrimary.color : styles.colorTextLight.color}
-                                ]}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-            </View>
-
-            {/* SCROLL PRINCIPAL */}
+               <TopNavBar 
+                navigation={navigation} 
+                activeScreen={'MainAppScreen'} 
+            />
             <ScrollView 
                 style={styles.contentArea}
                 contentContainerStyle={styles.optionsContainer}

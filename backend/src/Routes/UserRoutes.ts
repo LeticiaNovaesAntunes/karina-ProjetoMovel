@@ -4,7 +4,7 @@ import { authenticateToken, isAdmin } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/signup", createUser);
+router.post("/singup", createUser);
 router.put("/profile", authenticateToken, updateUser);
 router.post("/signin", loginUser);
 router.post("/forgotPassword", forgotPassword);

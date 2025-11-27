@@ -30,6 +30,8 @@ model User {
   isBlocked    Boolean  @default(false) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  resetToken        String?
+  resetTokenExpires DateTime?
 
   }
 
