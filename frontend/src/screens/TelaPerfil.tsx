@@ -4,6 +4,7 @@ import api from '../services/api';
 import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import TopNavBar from './Header';
 
 export default function TelaPerfil({ navigation }: any) {
     const [perfil, setPerfil] = useState<any>(null);
@@ -45,6 +46,10 @@ export default function TelaPerfil({ navigation }: any) {
 
     return (
         <View style={styles.container}>
+             <TopNavBar
+                navigation={navigation} 
+                activeScreen={'TelaPerfil'} 
+            />
             <View style={styles.header}>
                 <Image 
                     source={profileImageSource}

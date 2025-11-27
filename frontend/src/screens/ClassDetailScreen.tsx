@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import TopNavBar from './Header'; // Verifique se a importação está correta
+import TopNavBar from './Header';
 
 const { width } = Dimensions.get('window');
 
@@ -11,14 +11,15 @@ const COLORS = {
     textDark: '#555555',
     textMedium: '#777777',
     cardBackground: '#FFFFFF',
-    levelFacil: '#10B981', // Verde
-    levelMedio: '#F59E0B', // Laranja
-    levelDificil: '#EF4444', // Vermelho
+    levelFacil: '#10B981',
+    levelMedio: '#F59E0B',
+    levelDificil: '#EF4444',
 };
 
 const NAVBAR_HEIGHT_ADJUSTMENT = 90;
+const PADDING_HORIZONTAL = 20;
+const CONTENT_WIDTH = width - (PADDING_HORIZONTAL * 2);
 
-// Mapeia o nível para a cor do badge
 const getLevelColor = (level: string) => {
     switch (level.toUpperCase()) {
         case 'FACIL':
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
         paddingTop: NAVBAR_HEIGHT_ADJUSTMENT,
     },
     contentContainer: {
-        paddingHorizontal: 25,
+        paddingHorizontal: PADDING_HORIZONTAL,
         paddingBottom: 20,
     },
     title: {
@@ -142,13 +143,13 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     image: {
-        width: width - 50,
+        width: CONTENT_WIDTH,
         height: width * 0.6,
         borderRadius: 15,
         marginBottom: 30,
     },
     imagePlaceholder: {
-        width: width - 50,
+        width: CONTENT_WIDTH,
         height: width * 0.6,
         borderRadius: 15,
         marginBottom: 30,

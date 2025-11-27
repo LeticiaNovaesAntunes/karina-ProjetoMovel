@@ -80,7 +80,7 @@ export default function AllClassesScreen({ navigation }: any) {
         <View style={styles.screenContainer}>
             <TopNavBar 
                 navigation={navigation} 
-                activeScreen={'TelaExercicios'} 
+                activeScreen={'AllClassesScreen'} 
             />
             
             <View style={styles.fixedHeaderArea}>
